@@ -1,3 +1,14 @@
 .DS_Store
+
+# My own personal data
 facebook-*/
+Contacts.vcf
+txts.sqlite
+
+# Temporary personal data
+messageCounts*
+
+# Compiled stuff
 *.pyc
+output/
+
