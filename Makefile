@@ -1,13 +1,16 @@
 pythonExec = "/usr/local/bin/python"
 
-outputDir = "output"
 
-# Set up variables for all the file names
+# The input files - must be supplied by the user
 contactsVcf = Contacts.vcf
-contactsCsv = Contacts.csv
 txtsSqlite = txts.sqlite
-txtsCsv = txts.csv
 facebookHtml = facebook-andrewbr/html/messages.htm
+facebookAccessToken = facebookAccessToken.txt
+
+# Output files - these land in the outputDir directory
+outputDir = "output"
+txtsCsv = txts.csv
+contactsCsv = Contacts.csv
 facebookCsv = facebookMessages.csv
 allMessagesFile = allMessages.csv
 
@@ -24,7 +27,7 @@ text : makeOutputDirectory vcfToCsv $(txtsSqlite)
 	$(pythonExec) extract_txts.py $(txtsSqlite) $(outputDir)/$(contactsCsv) $(outputDir)/$(txtsCsv)
 
 facebook : makeOutputDirectory $(facebookHtml)
-	$(pythonExec) extract_facebook.py $(facebookHtml) $(outputDir)/$(facebookCsv)
+	$(pythonExec) extract_facebook.py $(facebookHtml) $(facebookAccessToken) $(outputDir)/$(facebookCsv)
 
 clean :
 	-rm -r $(outputDir) *.pyc
