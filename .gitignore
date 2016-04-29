@@ -1,10 +1,11 @@
 .DS_Store
 
 # My own personal data
-facebook-*/
+messages.htm
 facebookAccessToken.txt
 Contacts.vcf
-txts.sqlite
+3d0d7e5fb2ce288813306e4d4636395e047a3d28
+31bb7ba8914766d4ba40d6dfb6113c8b614be442
 
 # Temporary personal data
 messageCounts*

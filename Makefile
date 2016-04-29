@@ -3,8 +3,8 @@ pythonExec = "/usr/local/bin/python"
 
 # The input files - must be supplied by the user
 contactsVcf = Contacts.vcf
-txtsSqlite = txts.sqlite
-facebookHtml = facebook-andrewbr/html/messages.htm
+txtsSqlite = 3d0d7e5fb2ce288813306e4d4636395e047a3d28
+facebookHtml = messages.htm
 facebookAccessToken = facebookAccessToken.txt
 
 # Output files - these land in the outputDir directory
@@ -13,6 +13,7 @@ txtsCsv = txts.csv
 contactsCsv = Contacts.csv
 facebookCsv = facebookMessages.csv
 allMessagesFile = allMessages.csv
+
 
 all : text facebook
 	/bin/cat $(outputDir)/$(txtsCsv) $(outputDir)/$(facebookCsv) > $(outputDir)/$(allMessagesFile)
