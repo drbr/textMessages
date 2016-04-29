@@ -17,7 +17,7 @@ encoding = 'utf_8'
 
 def get_soup_from_html(html_filename):
     with open(html_filename) as html_file:
-        soup = BeautifulSoup(html_file, 'lxml')
+        soup = BeautifulSoup(html_file, 'html.parser')
         return soup
 
 
