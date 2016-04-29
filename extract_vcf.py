@@ -36,6 +36,7 @@ import vobject
 
 log = logging.getLogger(__name__)
 
+ENCODING = 'utf-8'
 
 def sanitize_phone(num):
     """
@@ -44,6 +45,8 @@ def sanitize_phone(num):
     """
 
     orig = num
+
+    # Delete all characters from num that are not digits
     num = num.translate(None, num.translate(None, string.digits))
 
     if len(num) <= 10:
@@ -62,38 +65,39 @@ def parse(fname):
     'emails' (list of strings) and 'phones' (list of strings) fields.
     """
 
-    for vobj in vobject.readComponents(open(fname)):
-        if not hasattr(vobj, 'fn'):
-            log.warning('[parse] skipping entry with no name: ' + repr(vobj))
-            continue
+    with open(fname) as vcf_file:
+        for vobj in vobject.readComponents(vcf_file):
+            if not hasattr(vobj, 'fn'):
+                log.warning('[parse] skipping entry with no name: ' + repr(vobj))
+                continue
 
-        entry = {
-            'name': vobj.fn.value.strip(),
-            'emails': [],
-            'phones': []
-        }
-
-        if hasattr(vobj, 'email_list'):
-            entry['emails'] = [e.value.strip() for e in vobj.email_list]
-
-        if hasattr(vobj, 'tel_list'):
-            entry['phones'] = [sanitize_phone(t.value) for t in vobj.tel_list]
-
-        log.debug('[parse] got entry for ' + entry['name'])
-
-        for phone in entry['phones']:
-            yield {
-                'name': entry['name'],
-                'phone': phone,
-                'email': ''
+            entry = {
+                'name': vobj.fn.value.decode(ENCODING).strip(),
+                'emails': [],
+                'phones': []
             }
 
-        for email in entry['emails']:
-            yield {
-                'name': entry['name'],
-                'phone': '',
-                'email': email
-            }
+            if hasattr(vobj, 'email_list'):
+                entry['emails'] = [e.value.decode(ENCODING).strip() for e in vobj.email_list]
+
+            if hasattr(vobj, 'tel_list'):
+                entry['phones'] = [sanitize_phone(t.value) for t in vobj.tel_list]
+
+            log.debug('[parse] got entry for ' + entry['name'])
+
+            for phone in entry['phones']:
+                yield {
+                    'name': entry['name'],
+                    'phone': phone,
+                    'email': ''
+                }
+
+            for email in entry['emails']:
+                yield {
+                    'name': entry['name'],
+                    'phone': '',
+                    'email': email
+                }
 
 
 def csv_output(fname, entries):
